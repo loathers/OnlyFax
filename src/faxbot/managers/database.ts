@@ -94,16 +94,37 @@ export async function getFaxStatistics(): Promise<FaxStatistics> {
     },
     take: 10,
   });
+  const topRequestsMonth = await prisma.faxRecord.groupBy({
+    by: ["faxRequest"],
+    _count: {
+      _all: true,
+    },
+    where: {
+      completed: {
+        gte: Math.round(Date.now() / 1000) - 31 * 24 * 60 * 60,
+      },
+    },
+    orderBy: {
+      _count: { faxRequest: "desc" },
+    },
+    take: 10,
+  });
 
   const topFaxes: FaxRequestedCount[] = [];
 
   topRequests.forEach((req) => {
     topFaxes.push({ name: req.faxRequest, count: req._count._all });
   });
+  const topFaxesMonth: FaxRequestedCount[] = [];
+
+  topRequestsMonth.forEach((req) => {
+    topFaxesMonth.push({ name: req.faxRequest, count: req._count._all });
+  });
 
   return {
     faxesServed,
     topFaxes,
+    topFaxesMonth,
   };
 }
 

@@ -196,4 +196,5 @@ export interface FaxRequestedCount {
 export interface FaxStatistics {
   faxesServed: number;
   topFaxes: FaxRequestedCount[];
+  topFaxesMonth: FaxRequestedCount[];
 }

@@ -417,6 +417,14 @@ async function createHtml(botName: string, botId: string) {
       })
       .join("\n")
   );
+  md = md.replaceAll(
+    "{Top Requests Month}",
+    faxStats.topFaxesMonth
+      .map((m) => {
+        return `|${m.name}|${formatNumber(m.count)}|`;
+      })
+      .join("\n")
+  );
 
   if (unreliableMonsters.length == 0) {
     unreliableMonsters.push({

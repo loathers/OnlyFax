@@ -37,6 +37,12 @@ Just consult me with the Fortune Teller in the VIP Lounge and I will respond wit
 | ------- | --------- |
 {Top Requests}
 
+### Most requested monsters for the last month!
+
+| Monster | Requested |
+| ------- | --------- |
+{Top Requests Month}
+
 ---
 
 # Faxable Monsters<a id="monsters"></a>
