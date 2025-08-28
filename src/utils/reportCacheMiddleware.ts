@@ -25,13 +25,17 @@ export const cacheReports = (onlyCache: string[]) => {
           try {
             res.header("Content-Type", contentType).send(body);
           } catch (error) {
-            console.log("Error while serving from cache", contentType, body);
+            console.log(
+              "Error while serving from cache",
+              error,
+              contentType,
+              body,
+            );
           }
 
           return;
         }
 
-        // eslint-disable-next-line @typescript-eslint/unbound-method
         const _send = res.send;
 
         res.send = (body: string) => {

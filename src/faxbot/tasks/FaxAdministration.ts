@@ -34,7 +34,7 @@ export class FaxAdministration {
       for (let i = 0; i < clans.length; i++) {
         await this.getFaxRunner().checkClanInfo(
           clans[i],
-          clans.length > 1 ? `(${i + 1} / ${clans.length})` : null
+          clans.length > 1 ? `(${i + 1} / ${clans.length})` : null,
         );
       }
     } finally {

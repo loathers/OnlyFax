@@ -35,12 +35,14 @@ Just consult me with the Fortune Teller in the VIP Lounge and I will respond wit
 
 | Monster | Requested |
 | ------- | --------- |
+
 {Top Requests}
 
 ### Most requested monsters for the last month!
 
 | Monster | Requested |
 | ------- | --------- |
+
 {Top Requests Month}
 
 ---
@@ -49,12 +51,14 @@ Just consult me with the Fortune Teller in the VIP Lounge and I will respond wit
 
 | ID  | Name | Command |
 | --- | ---- | ------- |
+
 {Source Monsters}
 
 These remaining monsters are in clans that are not marked as a source clan.
 
 | ID  | Name | Command |
 | --- | ---- | ------- |
+
 {Other Monsters}
 
 ---
@@ -63,6 +67,7 @@ These remaining monsters are in clans that are not marked as a source clan.
 
 | ID  | Name | Command |
 | --- | ---- | ------- |
+
 {Noteworthy Monsters}
 
 ---
@@ -110,7 +115,6 @@ I will pop into your clan, take your fax then send it to the clan that was looki
 - `addfax run` - You have a fax I'm looking for? I'll come and check out your clan's fax machine to grab it!
 - `addfax <Monster Name>` - Want to know if I'm looking for a certain monster that you may be fighting? Or have plans to fight? Just send me `addfax ` then the monster name! So `addfax Knob Goblin Embezzler` will probably tell you `Sorry, I don't need that monster!`.
 
-
 # Looking for these monsters<a id="lookingfor"></a>
 
 If the faxbot is looking for monsters, they will be listed below.
@@ -119,6 +123,7 @@ Be aware that some of the monsters in this list may be impossible to acquire nor
 
 | ID  | Name | Command |
 | --- | ---- | ------- |
+
 {Looking For Monsters}
 
 ---

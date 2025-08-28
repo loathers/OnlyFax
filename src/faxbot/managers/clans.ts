@@ -123,7 +123,7 @@ export async function updateClan(clan: FaxClanData) {
 
 export async function removeInaccessibleClans(clansWeCanAccess: KoLClan[]) {
   const toRemove = clans.filter(
-    (c) => !clansWeCanAccess.some((c1) => c1.id == c.clanId)
+    (c) => !clansWeCanAccess.some((c1) => c1.id == c.clanId),
   );
 
   if (toRemove.length == 0) {
@@ -159,57 +159,15 @@ export async function setFaxMonster(clan: FaxClanData, monsterId: number) {
   invalidateReportCache();
 }
 
-export function getRolloverFax(): FaxClanData {
-  // First we filter by monsters we don't know the ID of
-  const clanTargets = clans
-    .filter((c) => getClanType(c) == `Fax Source` && c.faxMonsterId != null)
-    .filter((c) => {
-      const monsters = [getMonsterById(c.faxMonsterId)];
-
-      // Loop through the monsters that this fax could be
-      for (const m of monsters) {
-        // If this monster isn't ambiguous, bit weird if we have multiple matches but ok!
-        if (m.category != `Ambiguous`) {
-          continue;
-        }
-
-        // If we already know a clan that has this possible monster
-        const alreadyHave = clans.some((c) => c.faxMonsterId == m.id);
-
-        // Then we don't need to check this monster specifically
-        if (alreadyHave) {
-          continue;
-        }
-
-        // One of the possible monsters this could be, is not known in our network
-        return true;
-      }
-
-      // We failed to find a monster that is ambigious
-      return false;
-    });
-
-  // No possible targets
-  if (clanTargets.length == 0) {
-    return null;
-  }
-
-  // Sort from oldest checked to newest checked
-  clanTargets.sort((c1, c2) => c1.clanLastChecked - c2.clanLastChecked);
-
-  // Return first matching
-  return clanTargets[0];
-}
-
 export function getFaxClans(...types: ClanType[]): FaxClanData[] {
   return clans.filter(
-    (c) => types.includes(getClanType(c)) && c.faxMonsterId != null
+    (c) => types.includes(getClanType(c)) && c.faxMonsterId != null,
   );
 }
 
 export function isUnknownMonsterInClanData(): boolean {
   return clans.some(
-    (c) => c.faxMonsterId != null && getMonsterById(c.faxMonsterId) == null
+    (c) => c.faxMonsterId != null && getMonsterById(c.faxMonsterId) == null,
   );
 }
 
@@ -229,7 +187,7 @@ export function getSpecificFaxSources(): [FaxClanData, number][] {
   ]);
 
   return mapped.filter(
-    ([c, type]) => type != null && getMonsterById(type) != null
+    ([, type]) => type != null && getMonsterById(type) != null,
   );
 }
 
@@ -249,6 +207,6 @@ export async function loadClans() {
   });
 
   addLog(
-    `Loaded ${clans.length} clans, of which ${faxSources.length} are fax sources and contain ${monsters.length} different monsters.`
+    `Loaded ${clans.length} clans, of which ${faxSources.length} are fax sources and contain ${monsters.length} different monsters.`,
   );
 }

@@ -64,7 +64,7 @@ export function stripHtml(message: string): string {
 
   while (
     (match = message.match(
-      /(?:<[^>]+? title="([^">]*)">.+?<\/[^>]*>)|(?:<(.|\n)*?>)/
+      /(?:<[^>]+? title="([^">]*)">.+?<\/[^>]*>)|(?:<(.|\n)*?>)/,
     )) != null
   ) {
     message = message.replace(match[0], match[1] || ``);
@@ -91,7 +91,7 @@ export function splitMessage(message: string, limit: number = 245): string[] {
     while (
       end > 0 &&
       (!message.includes(
-        (toSnip = decode(encodedRemainder.substring(0, end)))
+        (toSnip = decode(encodedRemainder.substring(0, end))),
       ) ||
         !message.includes(decode(encodedRemainder.substring(end))))
     ) {
@@ -132,7 +132,7 @@ export function isPublicMessage(message: KOLMessage): boolean {
 }
 
 export function getPublicMessageType(
-  message: KOLMessage
+  message: KOLMessage,
 ): PublicMessageType | undefined {
   if (message.type != `public`) {
     return undefined;

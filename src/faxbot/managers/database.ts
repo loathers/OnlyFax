@@ -153,7 +153,7 @@ export async function saveMonsters(monsters: MonsterData[]) {
 export async function removeSetting(
   user: KoLUser,
   monster: string,
-  setting: string
+  setting: string,
 ): Promise<string> {
   const existing = await prisma.customSetting.findFirst({
     where: {
@@ -167,7 +167,7 @@ export async function removeSetting(
   }
 
   addLog(
-    `${user.name} is removing setting ${setting} which is '${existing.value}' for ${monster}`
+    `${user.name} is removing setting ${setting} which is '${existing.value}' for ${monster}`,
   );
 
   await prisma.customSetting.delete({
@@ -186,7 +186,7 @@ export async function setSetting(
   user: KoLUser,
   monster: string,
   setting: string,
-  value: string
+  value: string,
 ): Promise<string | null> {
   const existing = await prisma.customSetting.findFirst({
     where: {
@@ -197,7 +197,7 @@ export async function setSetting(
 
   if (existing != null) {
     addLog(
-      `${user.name} (#${user.id}) is overwriting ${setting} for ${monster} from '${existing.value}' to '${value}'`
+      `${user.name} (#${user.id}) is overwriting ${setting} for ${monster} from '${existing.value}' to '${value}'`,
     );
 
     await prisma.customSetting.update({
@@ -206,7 +206,7 @@ export async function setSetting(
     });
   } else {
     addLog(
-      `${user.name} (#${user.id}) is setting setting ${setting} for ${monster} to '${value}'`
+      `${user.name} (#${user.id}) is setting setting ${setting} for ${monster} to '${value}'`,
     );
 
     await prisma.customSetting.create({

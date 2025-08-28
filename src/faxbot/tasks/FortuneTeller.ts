@@ -44,7 +44,7 @@ export class FortuneTeller {
     const promises = [];
 
     for (const match of page.matchAll(
-      /clan_viplounge\.php\?preaction=testlove&testlove=(\d+)/g
+      /clan_viplounge\.php\?preaction=testlove&testlove=(\d+)/g,
     )) {
       const userId = match[1];
 

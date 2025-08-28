@@ -28,18 +28,18 @@ app
     async (_, res) =>
       void res
         .type("xml")
-        .send(await formatMonsterList("xml", username, userId))
+        .send(await formatMonsterList("xml", username, userId)),
   )
   .get(
     "/onlyfax.json",
     async (_, res) =>
       void res
         .type("json")
-        .send(await formatMonsterList("json", username, userId))
+        .send(await formatMonsterList("json", username, userId)),
   )
   .get(
     "/lookingfor.json",
-    (_, res) => void res.type("json").send(generateLookingFor())
+    (_, res) => void res.type("json").send(generateLookingFor()),
   )
   /*.get(
     "/kmails.json",

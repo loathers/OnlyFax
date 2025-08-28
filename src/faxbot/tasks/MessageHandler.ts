@@ -164,7 +164,7 @@ export class MessageHandler {
         if (state == "Warn & Fail") {
           await this.getClient().sendPrivateMessage(
             msg.who,
-            "Please don't spam me with requests! Wait before messaging me again."
+            "Please don't spam me with requests! Wait before messaging me again.",
           );
         }
 
@@ -206,7 +206,7 @@ export class MessageHandler {
       if (this.isPrivateMessage(message)) {
         await this.getClient().sendPrivateMessage(
           message.who,
-          FaxMessages.ERROR_TOO_CLOSE_ROLLOVER
+          FaxMessages.ERROR_TOO_CLOSE_ROLLOVER,
         );
       }
 
@@ -235,12 +235,12 @@ export class MessageHandler {
 
       if (command != null && (!command.isRestricted() || admin)) {
         addLog(
-          `Now handling command '${message.msg}' for ${message.who.name} (#${message.who.id})`
+          `Now handling command '${message.msg}' for ${message.who.name} (#${message.who.id})`,
         );
         await command.execute(
           message.who,
           message.msg.substring(name.length).trim(),
-          admin
+          admin,
         );
 
         return;

@@ -10,9 +10,6 @@ export const schema = {
   DEFAULT_CLAN: Number,
   FAX_DUMP_CLAN: Number,
 
-  RUN_FAX_ROLLOVER: Boolean,
-  RUN_DANGEROUS_FAX_ROLLOVER: Boolean,
-
   BOT_CONTROLLERS: String,
 
   TESTING: {

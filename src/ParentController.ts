@@ -7,7 +7,6 @@ import {
 } from "./faxbot/managers/clans.js";
 import { loadMonsters, tryUpdateMonsters } from "./faxbot/monsters.js";
 import { FaxAdministration } from "./faxbot/tasks/FaxAdministration.js";
-import { FaxRollover } from "./faxbot/tasks/FaxRollover.js";
 import { FortuneTeller } from "./faxbot/tasks/FortuneTeller.js";
 import { MessageHandler } from "./faxbot/tasks/MessageHandler.js";
 import { addLog } from "./Settings.js";
@@ -25,7 +24,6 @@ export class ParentController {
   client: KoLClient;
   admin: FaxAdministration;
   lastSeenDay: number = 0;
-  rollover: FaxRollover;
   messages: MessageHandler;
   increments: number = 0;
   started: number = Date.now();
@@ -41,7 +39,6 @@ export class ParentController {
     this.admin = new FaxAdministration(this);
     this.faxer = new FaxOperations(this);
     this.fortune = new FortuneTeller(this.client);
-    this.rollover = new FaxRollover(this);
     this.messages = new MessageHandler(this);
   }
 
@@ -102,15 +99,9 @@ export class ParentController {
       this.shouldRestart()
     ) {
       addLog(
-        `FaxBot has been up for more than 12 hours, restarting to try avoid any potential memory leak. Between 2-3 minutes until RO..`
+        `FaxBot has been up for more than 12 hours, restarting to try avoid any potential memory leak. Between 2-3 minutes until RO..`,
       );
       process.exit(0);
-
-    }
-
-    // Finally, let the rest of the bot operate
-    if (this.client.isRolloverFaxTime()) {
-      await this.rollover.runFaxRollover();
     }
 
     await this.messages.pollMessages();
@@ -127,7 +118,7 @@ export class ParentController {
       }
 
       addLog(
-        `We seem to be stuck in a fight and it's the start of a new day.. Let us leave!`
+        `We seem to be stuck in a fight and it's the start of a new day.. Let us leave!`,
       );
 
       // Attempt to get out of the fight
@@ -178,21 +169,7 @@ export class ParentController {
     if ((config.FAXBOT_OPERATOR ?? ``).length < 3) {
       issues = true;
       addLog(
-        `Error! Bot Operator in settings hasn't been configured properly!`
-      );
-    }
-
-    if (![true, false].includes(config.RUN_FAX_ROLLOVER)) {
-      issues = true;
-      addLog(
-        `Error! Run Fax Rollover in settings hasn't been configured properly!`
-      );
-    }
-
-    if (![true, false].includes(config.RUN_DANGEROUS_FAX_ROLLOVER)) {
-      issues = true;
-      addLog(
-        `Error! Run Fax Rollover in settings hasn't been configured properly!`
+        `Error! Bot Operator in settings hasn't been configured properly!`,
       );
     }
 
@@ -207,7 +184,7 @@ export class ParentController {
     ) {
       issues = true;
       addLog(
-        `Error! Password hasn't been configured properly or is incredibly insecure!`
+        `Error! Password hasn't been configured properly or is incredibly insecure!`,
       );
     }
 
