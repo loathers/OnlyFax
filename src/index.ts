@@ -41,11 +41,6 @@ app
     "/lookingfor.json",
     (_, res) => void res.type("json").send(generateLookingFor()),
   )
-  /*.get(
-    "/kmails.json",
-    async (_, res) =>
-      void res.type("json").send(await controller.client.getKmails())
-  )*/
   .listen(3000);
 
 if (config.TESTING) {

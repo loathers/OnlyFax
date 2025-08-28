@@ -67,14 +67,6 @@ export class KoLClient {
     return this._player?.id;
   }
 
-  async getKmails(): Promise<string> {
-    if (this.isLoggedOut() || this.isRolloverRisk(15)) {
-      return "{}";
-    }
-
-    return await this.visitUrl(`api.php`, { what: "kmail", for: "Faxbot" });
-  }
-
   async relog() {
     this.setLoggedOut();
 
@@ -170,30 +162,6 @@ export class KoLClient {
     }
 
     return map;
-  }
-
-  async sendKmail(
-    target: number,
-    message: string,
-    meat: number = 0,
-    items: [number, number][] = [],
-  ) {
-    let currentItem: number = 1;
-    const args = {
-      action: `send`,
-      towho: target.toString(),
-      message: message,
-      savecopy: `on`,
-      sendmeat: meat > 0 ? meat.toString() : ``,
-    };
-
-    for (const [item, count] of items) {
-      args[`howmany` + currentItem] = count.toString();
-      args[`whichitem` + currentItem] = item.toString();
-      currentItem++;
-    }
-
-    await this.visitUrl(`sendmessage.php`, args);
   }
 
   async getStatus(): Promise<KoLStatus> {
