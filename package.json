@@ -7,7 +7,7 @@
   "type": "module",
   "scripts": {
     "start": "node --import tsx ./src/index.ts",
-    "lint": "npx eslint . && npx prettier --check .",
+    "lint": "npx tsc --noEmit --skipLibCheck && npx eslint . && npx prettier --check .",
     "format": "npx prettier --write ."
   },
   "repository": {
