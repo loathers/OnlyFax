@@ -3,7 +3,6 @@ import { getClanDataById, getClanType } from "../faxbot/managers/clans.js";
 import { addLog } from "../Settings.js";
 import type {
   ClanJoinAttempt,
-  CombatMacro,
   FaxMachine,
   KoLClan,
   KOLCredentials,
@@ -20,7 +19,6 @@ import { Mutex } from "async-mutex";
 import type { AxiosResponse } from "axios";
 import { isAxiosError } from "axios";
 import axios from "axios";
-import { readFileSync } from "fs";
 
 export class KoLClient {
   private _loginParameters: URLSearchParams;
@@ -30,7 +28,6 @@ export class KoLClient {
   private mutex = new Mutex();
   private currentClan: UserClan;
   private _lastFetchedMessages: string = `0`;
-  private stuckInFight: boolean = false;
   private lastStatus: KoLStatus;
 
   constructor(username: string, password: string) {
@@ -62,10 +59,6 @@ export class KoLClient {
     this.currentClan = undefined;
   }
 
-  isStuckInFight() {
-    return this.stuckInFight;
-  }
-
   getUsername() {
     return this._player?.name;
   }
@@ -86,20 +79,6 @@ export class KoLClient {
     this.setLoggedOut();
 
     return this.logIn();
-  }
-
-  getMonster(page: string): number {
-    const match = page.match(/<!-- MONSTERID: (\d+) -->/);
-
-    if (match == null) {
-      return null;
-    }
-
-    return parseInt(match[1]);
-  }
-
-  isFightPage(page: string): boolean {
-    return page.includes(` action=fight.php method=post>`);
   }
 
   async fetchNewMessages(): Promise<KOLMessage[]> {
@@ -337,9 +316,6 @@ export class KoLClient {
           `Login Success. Logged in as ${this._player.name} (#${this._player.id})`,
         );
         this._isLoggedOut = false;
-        const fightPage = await this.visitUrl(`fight.php`);
-
-        this.stuckInFight = this.isFightPage(fightPage);
 
         await this.visitUrl(`mchat.php`);
 
@@ -828,66 +804,5 @@ export class KoLClient {
 
   getCurrentClan() {
     return this.currentClan;
-  }
-
-  async startFaxFight(): Promise<number | undefined> {
-    let page = await this.visitUrl(`inv_use.php`, {
-      whichitem: 4873,
-      ajax: 1,
-    });
-
-    // Redirect follow? Should ask us to fetch fight.php
-    this.stuckInFight = this.isFightPage(page);
-
-    if (!this.stuckInFight) {
-      // Do this just incase
-      addLog(`Not in fight apparently, now visiting fight.php to make sure..`);
-      this.stuckInFight = this.isFightPage(
-        (page = await this.visitUrl(`fight.php`)),
-      );
-      addLog(`The outcome of that was, stuck in fight: ${this.stuckInFight}`);
-    }
-
-    if (!this.stuckInFight) {
-      return null;
-    }
-
-    return this.getMonster(page);
-  }
-
-  async getCombatMacros(): Promise<CombatMacro[]> {
-    const apiResponse = await this.visitUrl(`account_combatmacros.php`);
-
-    if (!apiResponse) {
-      return [];
-    }
-
-    const macros: CombatMacro[] = [];
-
-    const match = apiResponse.matchAll(
-      /<option value="(\d+)">(.*?)<\/option>/g,
-    );
-
-    for (const [, id, name] of match) {
-      macros.push({ id: id, name: name });
-    }
-
-    return macros;
-  }
-
-  async runCombatMacro(macro: string) {
-    return this.visitUrl(`fight.php`, {
-      action: `macro`,
-      macrotext: encodeURIComponent(macro),
-    });
-  }
-
-  async tryToEscapeFight(reason: string) {
-    addLog(
-      `Something must have gone wrong, we're trying to escape the fight with reason: ${reason}`,
-    );
-    const macro = readFileSync(`./data/macros/EscapeFromFight.txt`, `utf-8`);
-
-    return this.runCombatMacro(macro);
   }
 }

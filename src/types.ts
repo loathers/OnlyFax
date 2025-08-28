@@ -89,11 +89,6 @@ export type KoLEffect = {
   id: number;
 };
 
-export type CombatMacro = {
-  name: string;
-  id: string;
-};
-
 export type FaxMachine =
   | "Illegal Clan"
   | "No Clan Info"

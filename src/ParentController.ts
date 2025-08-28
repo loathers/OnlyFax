@@ -14,7 +14,6 @@ import { KoLClient } from "./utils/KoLClient.js";
 import {
   getKolDay,
   getSecondsElapsedInDay,
-  getSecondsToNearestRollover,
   getSecondsToRollover,
 } from "./utils/utilities.js";
 
@@ -108,30 +107,6 @@ export class ParentController {
   }
 
   async onNewDay() {
-    // If we're currently in a fight
-    if (this.client.isStuckInFight()) {
-      // If less than 5 minutes to the nearest rollover
-      if (getSecondsToNearestRollover() < 5 * 60) {
-        addLog(`Too soon to RO to try escape the fight we're currently in..`);
-
-        return;
-      }
-
-      addLog(
-        `We seem to be stuck in a fight and it's the start of a new day.. Let us leave!`,
-      );
-
-      // Attempt to get out of the fight
-      await this.client.tryToEscapeFight(`Stuck in fight after rollover`);
-
-      // If failed to escape fight
-      if (this.client.isStuckInFight()) {
-        addLog(`Am stuck in fight, not doing rest of new day..`);
-
-        return;
-      }
-    }
-
     // If we've loaded our clans before
     if (getClanById(config.DEFAULT_CLAN) != null) {
       // If we don't know what our current clan is, fetch it
