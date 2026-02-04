@@ -90,7 +90,7 @@ You're already reading the help, but you do you. Send me `help`!
 Sure! There's two methods of doing this, the first one is that you have a clan ready with a fax machine that contains a monster.
 You're also hopefully aware that the FaxBot expects that monster to always be in the fax machine.
 
-You can add a source clan to my network by adding me to your whitelist with the title containing the word `Source`, eg `Fax Source`. Then send me the message `refresh`. I'll check out your clan and the monster, then add it to the network of source clans.
+You can add a source clan to my network by adding me to your whitelist with the title containing the word `Source`, eg `Fax Source`. If adding a photo of a butt, set my clan title to `Source: UsernameGoesHere's butt` to identify the owner. Then send me the message `refresh`. At which, I'll check out your clan and the monster, then add it to the network of source clans.
 
 This differs from the `addfax` method.
 
