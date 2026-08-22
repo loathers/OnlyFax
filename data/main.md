@@ -11,7 +11,7 @@
 
 # What are you?<a id="whoami"></a>
 
-Hi! I am at your service, I deliver pics to your clan.
+Hi! I am at your service, I deliver pics of monsters to your clan.
 I am easy to get started. Just send me a monster name which is in my fax network, and I will deliver that monster to your clan's fax machine.
 Be aware though that you need a VIP invitation to access the fax machine, and I will need a whitelist to your clan.
 If you wish to add a monster to the fax network, give me a clan title with "Source" or "Fax Source" in the name.
