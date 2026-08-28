@@ -62,7 +62,9 @@ export class FaxAdministration {
       const data = unknown.find((d) => d.id == preprocess);
 
       if (data == null) {
-        throw `Expected a whitelist to the clan for ${preprocess} as defined in our settings`;
+        throw new Error(
+          `Expected a whitelist to the clan for ${preprocess} as defined in our settings`
+        );
       }
 
       await this.getFaxRunner().checkClanInfo(data);

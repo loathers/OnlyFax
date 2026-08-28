@@ -57,8 +57,14 @@ export class ParentController {
       // Start a timeout so that we won't wait a full 3 seconds before doing the next loop
       const timeout = new Promise((res) => setTimeout(res, 3000));
 
-      // Run the heartbeat
-      await this.onHeartbeat(this.increments);
+      // Run the heartbeat, catching any error so a single failure doesn't kill the bot permanently
+      try {
+        await this.onHeartbeat(this.increments);
+      } catch (e) {
+        addLog(
+          `Error during heartbeat: ${e instanceof Error ? e.stack : String(e)}`
+        );
+      }
 
       // Wait for the timeout
       await timeout;
