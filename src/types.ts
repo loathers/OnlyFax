@@ -89,11 +89,6 @@ export type KoLEffect = {
   id: number;
 };
 
-export type CombatMacro = {
-  name: string;
-  id: string;
-};
-
 export type FaxMachine =
   | "Illegal Clan"
   | "No Clan Info"
@@ -141,7 +136,6 @@ export interface MonsterData {
 export interface BotState {
   lastFaxed: number; // KOL Day we last did a fax fight
   lastUpdatedMonsters: number; // KOL Day we last updated monsters source file
-  faxRolloverDay: number; // Kol day we're doing a fax rollover on, reset to -1 when it's not a concern anymore
 }
 
 export type UserInfo = {

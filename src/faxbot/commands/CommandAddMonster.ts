@@ -23,7 +23,7 @@ export class CommandAddMonster implements FaxCommand {
     return `Joins your clan, grabs fax from machine, adds to an empty fax clan that was previously setup for that monster. Fax clan has title given 'Source: M1234' where 1234 is monster ID`;
   }
 
-  async execute(sender: KoLUser, params: string): Promise<any> {
+  async execute(sender: KoLUser, params: string) {
     if (params == `which`) {
       await this.which(sender);
 
@@ -47,7 +47,7 @@ export class CommandAddMonster implements FaxCommand {
       if (possibleMatches.length == 0) {
         await this.controller.client.sendPrivateMessage(
           sender,
-          `Unknown argument, send 'which' to find what I'm looking for or 'run' to ask me to look in your fax machine to try process it. You can also send the monster name/ID to check if I need that one.`
+          `Unknown argument, send 'which' to find what I'm looking for or 'run' to ask me to look in your fax machine to try process it. You can also send the monster name/ID to check if I need that one.`,
         );
 
         return;
@@ -55,24 +55,24 @@ export class CommandAddMonster implements FaxCommand {
 
       // Filter to a list of clans that might want this
       const clans = getSpecificFaxSources().filter(([c, id]) =>
-        possibleMatches.some((m) => m.id == id && c.faxMonsterId != id)
+        possibleMatches.some((m) => m.id == id && c.faxMonsterId != id),
       );
 
       if (clans.length == 0) {
         await this.controller.client.sendPrivateMessage(
           sender,
-          `I do not need that monster thanks!`
+          `I do not need that monster thanks!`,
         );
       } else {
         await this.controller.client.sendPrivateMessage(
           sender,
-          `It appears that monster would fit nicely into my fax network, use 'run' to tell me to grab that monster from your fax machine.`
+          `It appears that monster would fit nicely into my fax network, use 'run' to tell me to grab that monster from your fax machine.`,
         );
       }
     } else {
       await this.controller.client.sendPrivateMessage(
         sender,
-        `I do not recognize that argument. Did you mean 'which' or 'run'? You can also just send me the monster name/ID to check if I need that one.`
+        `I do not recognize that argument. Did you mean 'which' or 'run'? You can also just send me the monster name/ID to check if I need that one.`,
       );
     }
   }
@@ -80,13 +80,13 @@ export class CommandAddMonster implements FaxCommand {
   async which(sender: KoLUser) {
     // Filter to a list of clans that don't have their desired monster
     const clans = getSpecificFaxSources().filter(
-      ([c, id]) => c.faxMonsterId != id
+      ([c, id]) => c.faxMonsterId != id,
     );
 
     if (clans.length == 0) {
       await this.controller.client.sendPrivateMessage(
         sender,
-        `Thanks for your interest, but I don't need any monsters!`
+        `Thanks for your interest, but I don't need any monsters!`,
       );
 
       return;
@@ -112,7 +112,7 @@ export class CommandAddMonster implements FaxCommand {
     if (desired.length > 3) {
       await this.controller.client.sendPrivateMessage(
         sender,
-        `Too many monsters in demand, visit https://onlyfax.loathers.net/#lookingfor to view the list of monsters`
+        `Too many monsters in demand, visit https://onlyfax.loathers.net/#lookingfor to view the list of monsters`,
       );
 
       return;
@@ -120,11 +120,11 @@ export class CommandAddMonster implements FaxCommand {
 
     await this.controller.client.sendPrivateMessage(
       sender,
-      `You can also view this here: https://onlyfax.loathers.net/#lookingfor`
+      `You can also view this here: https://onlyfax.loathers.net/#lookingfor`,
     );
     await this.controller.client.sendPrivateMessage(
       sender,
-      `I'm looking for: ${desired.join(`, `)}`
+      `I'm looking for: ${desired.join(`, `)}`,
     );
   }
 
@@ -134,7 +134,7 @@ export class CommandAddMonster implements FaxCommand {
     if (clan == null) {
       await this.controller.client.sendPrivateMessage(
         sender,
-        `Unable to retrieve your clan info`
+        `Unable to retrieve your clan info`,
       );
 
       return;
@@ -142,13 +142,13 @@ export class CommandAddMonster implements FaxCommand {
 
     const joinResult = await this.controller.client.joinClanForcibly(
       clan,
-      `Grab Fax`
+      `Grab Fax`,
     );
 
     if (joinResult != `Joined`) {
       await this.controller.client.sendPrivateMessage(
         sender,
-        `Error while trying to join your clan: ${joinResult}`
+        `Error while trying to join your clan: ${joinResult}`,
       );
 
       return;
@@ -159,7 +159,7 @@ export class CommandAddMonster implements FaxCommand {
     if (fax != `Grabbed Fax`) {
       await this.controller.client.sendPrivateMessage(
         sender,
-        `Error while grabbing the fax: ${fax}`
+        `Error while grabbing the fax: ${fax}`,
       );
 
       return;
@@ -170,7 +170,7 @@ export class CommandAddMonster implements FaxCommand {
     if (photo == null) {
       await this.controller.client.sendPrivateMessage(
         sender,
-        `Error while examining the fax, it was null`
+        `Error while examining the fax, it was null`,
       );
 
       return;
@@ -180,13 +180,13 @@ export class CommandAddMonster implements FaxCommand {
 
     // Filter to only the clans that are empty or mismatch in monster
     const clans = getSpecificFaxSources().filter(
-      ([clan, id]) => id == monster.id && clan.faxMonsterId != id
+      ([clan, id]) => id == monster.id && clan.faxMonsterId != id,
     );
 
     if (clans.length == 0) {
       await this.controller.client.sendPrivateMessage(
         sender,
-        `Error, I have no clans that are looking for the monster: [${monster.id}] ${monster.name}`
+        `Error, I have no clans that are looking for the monster: [${monster.id}] ${monster.name}`,
       );
 
       return;
@@ -198,13 +198,13 @@ export class CommandAddMonster implements FaxCommand {
       if (faxClan.clanId != clan.id) {
         const joinResult = await this.controller.client.joinClanForcibly(
           { id: faxClan.clanId, name: faxClan.clanName },
-          `Add Monster to Fax`
+          `Add Monster to Fax`,
         );
 
         if (joinResult != `Joined`) {
           await this.controller.client.sendPrivateMessage(
             sender,
-            `Failed to join the clan ${faxClan.clanName}`
+            `Failed to join the clan ${faxClan.clanName}`,
           );
           continue;
         }
@@ -214,7 +214,7 @@ export class CommandAddMonster implements FaxCommand {
         if (fax != `Sent Fax`) {
           await this.controller.client.sendPrivateMessage(
             sender,
-            `Error while trying to deposit fax in ${faxClan.clanName}: ${fax}`
+            `Error while trying to deposit fax in ${faxClan.clanName}: ${fax}`,
           );
 
           // If it isn't a harmless error, never continue
@@ -224,7 +224,7 @@ export class CommandAddMonster implements FaxCommand {
             if (remaining > 0) {
               await this.controller.client.sendPrivateMessage(
                 sender,
-                `Skipped remaining ${remaining} clans`
+                `Skipped remaining ${remaining} clans`,
               );
             }
 
@@ -238,7 +238,7 @@ export class CommandAddMonster implements FaxCommand {
       await setFaxMonster(faxClan, monster.id);
       await this.controller.client.sendPrivateMessage(
         sender,
-        `Updated a source clan to contain the monster ${monster.name}. Thank you!`
+        `Updated a source clan to contain the monster ${monster.name}. Thank you!`,
       );
 
       // If we're not done yet
@@ -249,7 +249,7 @@ export class CommandAddMonster implements FaxCommand {
 
     await this.controller.client.sendPrivateMessage(
       sender,
-      `Now returning to base, job complete!`
+      `Now returning to base, job complete!`,
     );
   }
 }

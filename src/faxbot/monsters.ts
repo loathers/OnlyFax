@@ -6,7 +6,7 @@ import type {
   FaxClanData,
   MonsterCategory,
   MonsterData,
-  MonsterSetting
+  MonsterSetting,
 } from "../types.js";
 import { invalidateReportCache } from "../utils/reportCacheMiddleware.js";
 import { formatNumber } from "../utils/utilities.js";
@@ -15,16 +15,16 @@ import {
   getClanStatistics,
   getClanType,
   getFaxClans,
-  getSpecificFaxSources
+  getSpecificFaxSources,
 } from "./managers/clans.js";
 import {
   getFaxStatistics,
   getSettings,
   loadMonstersFromDatabase,
-  saveMonsters
+  saveMonsters,
 } from "./managers/database.js";
 import axios from "axios";
-import { encodeXML } from "entities";
+import { encode } from "html-entities";
 import { readFileSync } from "fs";
 import { marked } from "marked";
 
@@ -43,8 +43,8 @@ async function updateMonsterData() {
       {
         method: `GET`,
         maxRedirects: 0,
-        validateStatus: (status) => status === 200
-      }
+        validateStatus: (status) => status === 200,
+      },
     )
   ).data as string;
 
@@ -77,8 +77,8 @@ async function loadMonstersByString(monstersFile: string) {
     const data: MonsterData = {
       id: parseInt(match[2]),
       name: match[1],
-      manualName: manual == null ? match[1] : manual[1] ?? manual[2],
-      category: category
+      manualName: manual == null ? match[1] : (manual[1] ?? manual[2]),
+      category: category,
     };
 
     monsters.push(data);
@@ -201,7 +201,7 @@ export function getMonsters(identifier?: string): MonsterData[] {
   result = monsters.filter(
     (m) =>
       m.manualName &&
-      m.manualName.replaceAll(` `, ``).toLowerCase() == identifier
+      m.manualName.replaceAll(` `, ``).toLowerCase() == identifier,
   );
 
   if (result.length == 1) {
@@ -209,7 +209,7 @@ export function getMonsters(identifier?: string): MonsterData[] {
   }
 
   result = monsters.filter(
-    (m) => m.name && m.name.replaceAll(` `, ``).toLowerCase() == identifier
+    (m) => m.name && m.name.replaceAll(` `, ``).toLowerCase() == identifier,
   );
 
   if (result.length > 0) {
@@ -219,7 +219,7 @@ export function getMonsters(identifier?: string): MonsterData[] {
   result = monsters.filter(
     (m) =>
       m.manualName &&
-      m.manualName.replaceAll(` `, ``).toLowerCase().startsWith(identifier)
+      m.manualName.replaceAll(` `, ``).toLowerCase().startsWith(identifier),
   );
 
   if (result.length > 0) {
@@ -228,7 +228,7 @@ export function getMonsters(identifier?: string): MonsterData[] {
 
   result = monsters.filter(
     (m) =>
-      m.name && m.name.replaceAll(` `, ``).toLowerCase().startsWith(identifier)
+      m.name && m.name.replaceAll(` `, ``).toLowerCase().startsWith(identifier),
   );
 
   if (result.length > 0) {
@@ -239,7 +239,7 @@ export function getMonsters(identifier?: string): MonsterData[] {
   result = monsters.filter(
     (m) =>
       m.manualName &&
-      m.manualName.replaceAll(` `, ``).toLowerCase().includes(identifier)
+      m.manualName.replaceAll(` `, ``).toLowerCase().includes(identifier),
   );
 
   if (result.length > 0) {
@@ -248,7 +248,7 @@ export function getMonsters(identifier?: string): MonsterData[] {
 
   result = monsters.filter(
     (m) =>
-      m.name && m.name.replaceAll(` `, ``).toLowerCase().includes(identifier)
+      m.name && m.name.replaceAll(` `, ``).toLowerCase().includes(identifier),
   );
 
   return result;
@@ -256,7 +256,7 @@ export function getMonsters(identifier?: string): MonsterData[] {
 
 export function createMonsterList(
   reliableClans: boolean | null, // If null, include all monsters we have access to
-  settings: MonsterSetting[] = []
+  settings: MonsterSetting[] = [],
 ): FaxbotDatabaseMonster[] {
   let clans: FaxClanData[];
 
@@ -298,7 +298,7 @@ export function createMonsterList(
 
     if (monsterData == null) {
       addLog(
-        `Unable to find a monster '${clan.faxMonsterId}'. We have ${monsters.length} monsters loaded`
+        `Unable to find a monster '${clan.faxMonsterId}'. We have ${monsters.length} monsters loaded`,
       );
       continue;
     }
@@ -321,14 +321,14 @@ export function createMonsterList(
     }
 
     const category = settings.find(
-      (s) => s.monster == monsterCommand && s.setting == "Category"
+      (s) => s.monster == monsterCommand && s.setting == "Category",
     );
 
     const monster: FaxbotDatabaseMonster = {
       name: displayedName,
       actual_name: monsterData.name,
       command: monsterCommand,
-      category: category == null ? monsterData.category : category.value
+      category: category == null ? monsterData.category : category.value,
     };
 
     monsterList.push(monster);
@@ -340,7 +340,7 @@ export function createMonsterList(
         name: `Test Monster ${i}`,
         actual_name: `Test Monster ${i}`,
         command: `[100${i}]Test Monster ${i}`,
-        category: "Test"
+        category: "Test",
       });
     }
   }
@@ -357,7 +357,7 @@ async function createHtml(botName: string, botId: string) {
 
   const generateMonsterList = (
     keyword: string,
-    monsters: FaxbotDatabaseMonster[]
+    monsters: FaxbotDatabaseMonster[],
   ) => {
     md = md.replaceAll(
       keyword,
@@ -375,7 +375,7 @@ async function createHtml(botName: string, botId: string) {
 
           return `|${match[1] ?? "N/A"}|${match[2]}|\`${m.command}\`|`;
         })
-        .join("\n")
+        .join("\n"),
     );
   };
 
@@ -393,21 +393,21 @@ async function createHtml(botName: string, botId: string) {
   const reliableMonsters = createMonsterList(true, settings);
   const allMonsters = createMonsterList(null, settings);
   const noteworthyMonsters = allMonsters.filter((m) =>
-    settings.some((s) => s.monster == m.command && s.setting == "Noteworthy")
+    settings.some((s) => s.monster == m.command && s.setting == "Noteworthy"),
   );
   const unreliableMonsters = allMonsters.filter(
-    (m) => !reliableMonsters.some((m1) => m1.name == m.name)
+    (m) => !reliableMonsters.some((m1) => m1.name == m.name),
   );
 
   md = md.replaceAll(
     "{Other Monster Count}",
-    formatNumber(unreliableMonsters.length)
+    formatNumber(unreliableMonsters.length),
   );
   md = md.replaceAll("{Source Clans}", formatNumber(clanStats.sourceClans));
   md = md.replaceAll("{Other Clans}", formatNumber(clanStats.otherClans));
   md = md.replaceAll(
     "{Source Monster Count}",
-    formatNumber(reliableMonsters.length)
+    formatNumber(reliableMonsters.length),
   );
 
   md = md.replaceAll("{Faxes Served}", formatNumber(faxStats.faxesServed));
@@ -417,7 +417,7 @@ async function createHtml(botName: string, botId: string) {
       .map((m) => {
         return `|${m.name}|${formatNumber(m.count)}|`;
       })
-      .join("\n")
+      .join("\n"),
   );
   md = md.replaceAll(
     "{Top Requests Month}",
@@ -425,7 +425,7 @@ async function createHtml(botName: string, botId: string) {
       .map((m) => {
         return `|${m.name}|${formatNumber(m.count)}|`;
       })
-      .join("\n")
+      .join("\n"),
   );
 
   if (unreliableMonsters.length == 0) {
@@ -433,7 +433,7 @@ async function createHtml(botName: string, botId: string) {
       name: ``,
       actual_name: "",
       command: "",
-      category: ""
+      category: "",
     });
   }
 
@@ -443,7 +443,7 @@ async function createHtml(botName: string, botId: string) {
 
   // Build the list of clans that are looking for monsters
   const lookingForClans = getSpecificFaxSources().filter(
-    ([c, id]) => c.faxMonsterId != id
+    ([c, id]) => c.faxMonsterId != id,
   );
 
   // We're sorting this by newest clans first
@@ -463,12 +463,12 @@ async function createHtml(botName: string, botId: string) {
       name: monster.name,
       actual_name: monster.name,
       command: cmd,
-      category: "N/A"
+      category: "N/A",
     });
   }
 
   lookingForMonsters.sort((m1, m2) =>
-    m1.actual_name.localeCompare(m2.actual_name)
+    m1.actual_name.localeCompare(m2.actual_name),
   );
 
   generateMonsterList("{Looking For Monsters}", lookingForMonsters);
@@ -489,7 +489,7 @@ export function generateLookingFor(): string {
       clan: clan.clanName,
       title: clan.clanTitle,
       monster: monsterId,
-      name: getMonsterById(monsterId)?.name
+      name: getMonsterById(monsterId)?.name,
     }));
 
   clans.sort((c1, c2) => c1.name.localeCompare(c2.name));
@@ -500,7 +500,7 @@ export function generateLookingFor(): string {
 export async function formatMonsterList(
   format: "xml" | "json" | "html",
   botName: string,
-  botId: string
+  botId: string,
 ): Promise<string> {
   if (format === "html") {
     return createHtml(botName, botId);
@@ -511,9 +511,9 @@ export async function formatMonsterList(
   const data = {
     botdata: {
       name: botName,
-      playerid: botId
+      playerid: botId,
     },
-    monsterlist: { monsterdata: reliableMonsters }
+    monsterlist: { monsterdata: reliableMonsters },
   } satisfies FaxbotDatabase;
 
   if (format === "xml") {
@@ -536,7 +536,7 @@ type NestedValue =
 function createXMLField(
   name: string,
   value: NestedValue,
-  spacing: string
+  spacing: string,
 ): string[] {
   const strings: string[] = [];
 
@@ -548,7 +548,7 @@ function createXMLField(
         const values = createXMLField(
           key,
           arrayEntry[key],
-          spacing + constSpace
+          spacing + constSpace,
         );
 
         strings.push(...values);
@@ -567,7 +567,9 @@ function createXMLField(
 
     strings.push(`${spacing}</${name}>`);
   } else {
-    strings.push(`${spacing}<${name}>${encodeXML(value.toString())}</${name}>`);
+    strings.push(
+      `${spacing}<${name}>${encode(value.toString(), { level: "xml", mode: "nonAscii" })}</${name}>`,
+    );
   }
 
   return strings;
