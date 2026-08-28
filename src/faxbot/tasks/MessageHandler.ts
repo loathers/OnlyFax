@@ -46,10 +46,10 @@ class SpamHandler {
 
     // If they have an entry but it's no longer valid
     if (handle != null && this.isExpired(handle)) {
-      // Set variable to null
-      handle = null;
       // Remove from array
       this.lastHandled.splice(this.lastHandled.indexOf(handle), 1);
+      // Set variable to null
+      handle = null;
     }
 
     // No entry, add them. Don't skip their message
