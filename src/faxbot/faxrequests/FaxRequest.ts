@@ -8,7 +8,7 @@ import type {
 } from "../../types.js";
 import type { KoLClient } from "../../utils/KoLClient.js";
 import type { FaxMessages } from "../../utils/messages.js";
-import { getMonsterById, PHOTOCOPIED_BUTT_ID } from "../monsters.js";
+import { PHOTOCOPIED_BUTT_ID } from "../monsters.js";
 
 export enum FaxOutcome {
   FAILED,
@@ -29,36 +29,6 @@ export interface FaxRequest {
   getRequester(): string;
 }
 
-export class RolloverFaxRequest implements FaxRequest {
-  hasFax: boolean;
-  clan: FaxClanData;
-  targetClan: KoLClan;
-  monsterName: string;
-
-  constructor(clan: FaxClanData) {
-    this.clan = clan;
-    this.monsterName =
-      clan.faxMonsterId != null
-        ? getMonsterById(clan.faxMonsterId)?.name
-        : "Unknown Monster";
-    this.targetClan = { id: clan.clanId, name: clan.clanName };
-  }
-
-  async notifyUpdate(message: FaxMessages) {}
-
-  getFaxSource(): FaxClanData {
-    return this.clan;
-  }
-
-  getExpectedMonster(): string {
-    return this.monsterName;
-  }
-
-  getRequester(): string {
-    return `<Fax Rollover>`;
-  }
-}
-
 export class PlayerFaxRequest implements FaxRequest {
   client: KoLClient;
   player: KoLUser;
@@ -73,7 +43,7 @@ export class PlayerFaxRequest implements FaxRequest {
     player: KoLUser,
     monster: MonsterData,
     clan: KoLClan,
-    fax: DepositedFax
+    fax: DepositedFax,
   ) {
     this.client = client;
     this.player = player;
@@ -98,7 +68,7 @@ export class PlayerFaxRequest implements FaxRequest {
     }
 
     const match = this.faxSource.clanTitle.match(
-      /Source: ([a-zA-Z\d_ ]+'s butt)$/
+      /Source: ([a-zA-Z\d_ ]+'s butt)$/,
     );
 
     if (match == null) {

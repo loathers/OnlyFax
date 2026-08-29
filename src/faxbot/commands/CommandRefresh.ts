@@ -27,7 +27,7 @@ export class CommandRefresh implements FaxCommand {
   async execute(
     sender: KoLUser,
     paramters: string,
-    isAdmin: boolean
+    isAdmin: boolean,
   ): Promise<void> {
     // If not an admin, or no parameters.
     if (isAdmin != true || paramters.length == 0) {
@@ -38,12 +38,12 @@ export class CommandRefresh implements FaxCommand {
       if (!result) {
         await this.controller.client.sendPrivateMessage(
           sender,
-          `Unable to update monsters, too soon since last monster update`
+          `Unable to update monsters, too soon since last monster update`,
         );
       } else {
         await this.controller.client.sendPrivateMessage(
           sender,
-          `Monster list has been updated!`
+          `Monster list has been updated!`,
         );
       }
     } else if (paramters.split(" ")[0].toLowerCase() == "all") {
@@ -51,7 +51,7 @@ export class CommandRefresh implements FaxCommand {
     } else {
       await this.controller.client.sendPrivateMessage(
         sender,
-        `Invalid parameter. Try monsters/all or no parameter to refresh clan`
+        `Invalid parameter. Try monsters/all or no parameter to refresh clan`,
       );
     }
   }
@@ -62,7 +62,7 @@ export class CommandRefresh implements FaxCommand {
     if (clan == null) {
       await this.controller.client.sendPrivateMessage(
         sender,
-        `Unable to load your clan`
+        `Unable to load your clan`,
       );
 
       return;
@@ -70,14 +70,14 @@ export class CommandRefresh implements FaxCommand {
 
     await this.controller.client.sendPrivateMessage(
       sender,
-      `Now refreshing the clan '${clan.name}'`
+      `Now refreshing the clan '${clan.name}'`,
     );
 
     await this.controller.admin.refreshClans([clan]);
 
     await this.controller.client.sendPrivateMessage(
       sender,
-      `Your clan info has been refreshed`
+      `Your clan info has been refreshed`,
     );
   }
 
@@ -85,7 +85,7 @@ export class CommandRefresh implements FaxCommand {
     if (params.length == 0) {
       await this.controller.client.sendPrivateMessage(
         sender,
-        `Please provide a name filter for what clans to refresh`
+        `Please provide a name filter for what clans to refresh`,
       );
 
       return;
@@ -109,7 +109,7 @@ export class CommandRefresh implements FaxCommand {
     if (toCheck.length == 0) {
       await this.controller.client.sendPrivateMessage(
         sender,
-        `None of my whitelisted clans matched your query.`
+        `None of my whitelisted clans matched your query.`,
       );
 
       return;
@@ -117,14 +117,14 @@ export class CommandRefresh implements FaxCommand {
 
     await this.controller.client.sendPrivateMessage(
       sender,
-      `Now refreshing ${toCheck.length} whitelisted clans..`
+      `Now refreshing ${toCheck.length} whitelisted clans..`,
     );
 
     await this.controller.admin.refreshClans(toCheck);
 
     await this.controller.client.sendPrivateMessage(
       sender,
-      `${toCheck.length} clans have been refreshed.`
+      `${toCheck.length} clans have been refreshed.`,
     );
     invalidateReportCache();
   }

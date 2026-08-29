@@ -28,15 +28,15 @@ export class CommandSetting implements FaxCommand {
 
   async execute(sender: KoLUser, parameters: string) {
     const match = decode(parameters).match(
-      /^(\[\d+].+?) (\S+) (remove|set) ?(.+)?$/
+      /^(\[\d+].+?) (\S+) (remove|set) ?(.+)?$/,
     );
 
     if (match == null) {
       await this.controller.client.sendPrivateMessage(
         sender,
         `Invalid parameter. Use the format "[123]MonsterXmlCommand <${SettingTypes.join(
-          "/"
-        )}> <set/remove> value?", where value is omitted if not needed`
+          "/",
+        )}> <set/remove> value?", where value is omitted if not needed`,
       );
 
       return;
@@ -52,13 +52,13 @@ export class CommandSetting implements FaxCommand {
     }
 
     settingName = SettingTypes.find(
-      (t) => t.toLowerCase() == settingName.toLowerCase()
+      (t) => t.toLowerCase() == settingName.toLowerCase(),
     );
 
     if (!SettingTypes.includes(settingName as SettingType)) {
       await this.controller.client.sendPrivateMessage(
         sender,
-        `Unknown setting, use one of ${SettingTypes.join(", ")}`
+        `Unknown setting, use one of ${SettingTypes.join(", ")}`,
       );
 
       return;
@@ -66,13 +66,13 @@ export class CommandSetting implements FaxCommand {
 
     const monsters = createMonsterList(null);
     const mons = monsters.find(
-      (m) => m.command.replaceAll(" ", "") == monster.replaceAll(" ", "")
+      (m) => m.command.replaceAll(" ", "") == monster.replaceAll(" ", ""),
     );
 
     if (mons == null) {
       await this.controller.client.sendPrivateMessage(
         sender,
-        `Unable to find a monster by the name '${monster}'`
+        `Unable to find a monster by the name '${monster}'`,
       );
 
       return;
@@ -88,12 +88,12 @@ export class CommandSetting implements FaxCommand {
       if (oldSetting == null) {
         await this.controller.client.sendPrivateMessage(
           sender,
-          `The setting was not in use. Nothing has changed.`
+          `The setting was not in use. Nothing has changed.`,
         );
       } else {
         await this.controller.client.sendPrivateMessage(
           sender,
-          `Setting ${settingName} with value '${oldSetting}' has been removed for: ${monster}`
+          `Setting ${settingName} with value '${oldSetting}' has been removed for: ${monster}`,
         );
       }
 
@@ -105,12 +105,12 @@ export class CommandSetting implements FaxCommand {
     if (oldSetting == null) {
       await this.controller.client.sendPrivateMessage(
         sender,
-        `Setting ${settingName} has been set to '${value}' for: ${monster}`
+        `Setting ${settingName} has been set to '${value}' for: ${monster}`,
       );
     } else {
       await this.controller.client.sendPrivateMessage(
         sender,
-        `Setting ${settingName} has been changed from '${oldSetting}' to '${value}' for: ${monster}`
+        `Setting ${settingName} has been changed from '${oldSetting}' to '${value}' for: ${monster}`,
       );
     }
   }

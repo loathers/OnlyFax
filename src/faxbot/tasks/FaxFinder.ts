@@ -4,7 +4,7 @@ import { getClanByMonster, getFaxClans } from "../managers/clans.js";
 import {
   getMonsterById,
   getMonsters,
-  PHOTOCOPIED_BUTT_ID
+  PHOTOCOPIED_BUTT_ID,
 } from "../monsters.js";
 
 export class FaxFinder {
@@ -44,7 +44,7 @@ export class FaxFinder {
   private findButtMonster() {
     const clanMatch: FaxClanData[] = getFaxClans(
       `Fax Source`,
-      `Random Clan`
+      `Random Clan`,
     ).filter((c) => {
       // If clan is not a butt
       if (c.faxMonsterId != PHOTOCOPIED_BUTT_ID) {
@@ -69,7 +69,7 @@ export class FaxFinder {
 
     // Sort clans to have the oldest clans go first
     clanMatch.sort(
-      (c1, c2) => c1.faxMonsterLastChanged - c2.faxMonsterLastChanged
+      (c1, c2) => c1.faxMonsterLastChanged - c2.faxMonsterLastChanged,
     );
 
     if (clanMatch.length == 0) {
@@ -123,7 +123,7 @@ export class FaxFinder {
       this.errorMessage =
         FaxMessages.ERROR_MONSTER_NOT_IN_FAX_NETWORK.replaceAll(
           `{monster}`,
-          monster.name
+          monster.name,
         );
 
       return false;
