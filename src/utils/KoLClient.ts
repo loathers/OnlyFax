@@ -171,7 +171,9 @@ export class KoLClient {
     });
 
     if (!apiResponse || !apiResponse[`equipment`]) {
-      throw `Error fetching api on ` + this.getUsername() + `:` + apiResponse;
+      throw new Error(
+        `Error fetching api on ` + this.getUsername() + `:` + apiResponse,
+      );
     }
 
     this._credentials.pwdhash = apiResponse[`pwd`];
