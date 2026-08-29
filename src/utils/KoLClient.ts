@@ -172,7 +172,7 @@ export class KoLClient {
 
     if (!apiResponse || !apiResponse[`equipment`]) {
       throw new Error(
-        `Error fetching api on ` + this.getUsername() + `:` + apiResponse
+        `Error fetching api on ` + this.getUsername() + `:` + apiResponse,
       );
     }
 

@@ -63,7 +63,7 @@ export class FaxAdministration {
 
       if (data == null) {
         throw new Error(
-          `Expected a whitelist to the clan for ${preprocess} as defined in our settings`
+          `Expected a whitelist to the clan for ${preprocess} as defined in our settings`,
         );
       }
 

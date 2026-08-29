@@ -58,7 +58,7 @@ export class ParentController {
         await this.onHeartbeat(this.increments);
       } catch (e) {
         addLog(
-          `Error during heartbeat: ${e instanceof Error ? e.stack : String(e)}`
+          `Error during heartbeat: ${e instanceof Error ? e.stack : String(e)}`,
         );
       }
 

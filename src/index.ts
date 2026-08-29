@@ -8,10 +8,10 @@ import { App } from "@tinyhttp/app";
 import { createInterface } from "readline";
 
 process.on("uncaughtException", (e) =>
-  addLog(`Uncaught exception: ${e instanceof Error ? e.stack : String(e)}`)
+  addLog(`Uncaught exception: ${e instanceof Error ? e.stack : String(e)}`),
 );
 process.on("unhandledRejection", (e) =>
-  addLog(`Unhandled rejection: ${e instanceof Error ? e.stack : String(e)}`)
+  addLog(`Unhandled rejection: ${e instanceof Error ? e.stack : String(e)}`),
 );
 
 const controller = new ParentController();
