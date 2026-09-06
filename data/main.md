@@ -35,14 +35,12 @@ Just consult me with the Fortune Teller in the VIP Lounge and I will respond wit
 
 | Monster | Requested |
 | ------- | --------- |
-
 {Top Requests}
 
 ### Most requested monsters for the last month!
 
 | Monster | Requested |
 | ------- | --------- |
-
 {Top Requests Month}
 
 ---
@@ -51,14 +49,12 @@ Just consult me with the Fortune Teller in the VIP Lounge and I will respond wit
 
 | ID  | Name | Command |
 | --- | ---- | ------- |
-
 {Source Monsters}
 
 These remaining monsters are in clans that are not marked as a source clan.
 
 | ID  | Name | Command |
 | --- | ---- | ------- |
-
 {Other Monsters}
 
 ---
@@ -67,7 +63,6 @@ These remaining monsters are in clans that are not marked as a source clan.
 
 | ID  | Name | Command |
 | --- | ---- | ------- |
-
 {Noteworthy Monsters}
 
 ---
@@ -123,7 +118,6 @@ Be aware that some of the monsters in this list may be impossible to acquire nor
 
 | ID  | Name | Command |
 | --- | ---- | ------- |
-
 {Looking For Monsters}
 
 ---
