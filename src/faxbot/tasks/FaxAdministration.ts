@@ -101,6 +101,7 @@ export class FaxAdministration {
 
     if (outdated.length > 0) {
       const clan = outdated[0];
+      const lastChecked = clan.clanLastChecked;
 
       try {
         await this.controller.faxer.checkClanInfo({
@@ -109,8 +110,10 @@ export class FaxAdministration {
         });
       } catch (e) {
         addLog(`Errored while checking ${clan.clanName}: ${e}`);
+      }
 
-        // As we errored, just set it to have been checked and we'll skip it
+      // checkClanInfo returns early on some fax states without updating clanLastChecked
+      if (clan.clanLastChecked == lastChecked) {
         clan.clanLastChecked = Math.round(Date.now() / 1000);
         await updateClan(clan);
       }
