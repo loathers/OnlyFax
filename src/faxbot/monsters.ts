@@ -39,7 +39,7 @@ async function updateMonsterData() {
   addLog(`Now rebuilding monsters from kolmafia..`);
   const fetchedFile = (
     await axios(
-      `https://raw.githubusercontent.com/kolmafia/kolmafia/main/src/data/monsters.txt`,
+      `https://raw.githubusercontent.com/kolmafia/kolmafia/refs/heads/main/src/main/resources/data/monsters.txt`,
       {
         method: `GET`,
         maxRedirects: 0,
