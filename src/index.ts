@@ -23,9 +23,8 @@ const userId = controller.client.getUserID();
 const app = new App();
 
 app
-  // Since every endpoint is a report, for the moment this middleware is just set up
-  // to cache every endpoint.
-  .use(cacheReports(["/", "/onlyfax.xml", "/onlyfax.json", "lookingfor.json"]))
+  // /lookingfor.json is left out so it always reflects the current clan titles
+  .use(cacheReports(["/", "/onlyfax.xml", "/onlyfax.json"]))
   .get("/", async (_, res) => {
     const html = await formatMonsterList("html", username, userId);
     void res.type("html").send(html);
